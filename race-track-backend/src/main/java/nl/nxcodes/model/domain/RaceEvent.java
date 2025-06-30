@@ -1,6 +1,7 @@
 package nl.nxcodes.model.domain;
 
 import jakarta.persistence.*;
+import nl.nxcodes.rest.dto.post.RaceEventPostDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +12,8 @@ public class RaceEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private UUID uuid;
+    @Column(nullable = false, unique = true)
+    private final UUID uuid;
 
     private String name;
 
@@ -20,6 +22,11 @@ public class RaceEvent {
 
     public RaceEvent() {
         this.uuid = UUID.randomUUID();
+    }
+
+    public RaceEvent(RaceEventPostDTO raceEventDto) {
+        this();
+        this.name = raceEventDto.name();
     }
 
     public Long getId() {
