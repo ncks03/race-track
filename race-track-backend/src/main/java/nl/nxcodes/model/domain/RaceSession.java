@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@NamedQuery(
+        name = "RaceSession.findByUuid",
+        query = "select rs from RaceSession rs where rs.uuid = :uuid"
+)
 public class RaceSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +18,7 @@ public class RaceSession {
     @Column(nullable = false, unique = true)
     private UUID uuid;
 
+    @Enumerated(EnumType.STRING)
     private SessionType sessionType;
 
     private LocalDateTime startTime;

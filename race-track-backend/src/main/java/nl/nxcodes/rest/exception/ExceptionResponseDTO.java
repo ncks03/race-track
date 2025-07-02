@@ -1,4 +1,4 @@
-package nl.nxcodes.rest.dto.response;
+package nl.nxcodes.rest.exception;
 
 public record ExceptionResponseDTO(String message) {
 }

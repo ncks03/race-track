@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@NamedQuery(
+        name = "RaceEvent.findByUuid",
+        query = "select re from RaceEvent re where re.uuid = :uuid"
+)
 public class RaceEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
