@@ -5,6 +5,7 @@ import nl.nxcodes.model.domain.RaceEvent;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequestScoped
 public class RaceEventRepository extends Repository<RaceEvent> {
@@ -17,9 +18,9 @@ public class RaceEventRepository extends Repository<RaceEvent> {
     }
 
     @Override
-    public Optional<RaceEvent> findByUuid(String uuid) {
+    public Optional<RaceEvent> findByUuid(UUID uuid) {
         return Optional.ofNullable(
-                em.createQuery("select re from RaceEvent re where re.uuid = :uuid", RaceEvent.class)
+                em.createNamedQuery("RaceEvent.findByUuid", RaceEvent.class)
                         .setParameter("uuid", uuid)
                         .getSingleResult()
         );

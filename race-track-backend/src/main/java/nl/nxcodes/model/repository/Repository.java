@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Transactional
 public abstract class Repository<T> {
@@ -15,7 +16,7 @@ public abstract class Repository<T> {
 
     public abstract Optional<T> findById(Long id);
 
-    public abstract Optional<T> findByUuid(String uuid);
+    public abstract Optional<T> findByUuid(UUID uuid);
 
     public abstract List<T> findAll();
 
