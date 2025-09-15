@@ -1,10 +1,17 @@
 package nl.nxcodes.model.domain;
 
-import jakarta.persistence.*;
-import nl.nxcodes.rest.dto.post.RaceEventPostDTO;
-
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import nl.nxcodes.rest.dto.post.RaceEventPostDTO;
 
 @Entity
 @NamedQuery(

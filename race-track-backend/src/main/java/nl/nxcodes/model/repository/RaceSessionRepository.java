@@ -1,11 +1,13 @@
 package nl.nxcodes.model.repository;
 
+import jakarta.enterprise.context.RequestScoped;
 import nl.nxcodes.model.domain.RaceSession;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequestScoped
 public class RaceSessionRepository extends Repository<RaceSession> {
     @Override
     public Optional<RaceSession> findById(Long id) {
