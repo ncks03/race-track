@@ -1,0 +1,30 @@
+@if (events) {
+  <h1>Events</h1>
+
+  <hr>
+
+  <h2>Upcoming</h2>
+
+  <div class="row">
+    @for (event of getUpcomingEvents(); track event.uuid) {
+        <div class="col-lg">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{event.name}}</h4>
+            </div>
+          </div>
+        </div>
+    }
+  </div>
+
+} @else if (error) {
+
+  <h2>Something went wrong loading the events!</h2>
+
+  <p>{{error.message}}</p>
+
+} @else {
+
+  <h2>Loading events...</h2>
+
+}
