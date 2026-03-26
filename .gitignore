@@ -1,0 +1,10 @@
+# IDEs
+.idea/
+.vscode/
+
+# Maven
+target/
+
+# Node & Angular
+node_modules/
+.angular/
