@@ -1,0 +1,240 @@
+openapi: 3.1.0
+info:
+  title: RaceTrack API
+  description: data about Race events and sessions
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+
+  # Sessions
+
+  /sessions:
+    get:
+      description: "get all sessions"
+      tags:
+        - "sessions"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaceSession"
+
+  /sessions/upcoming:
+    get:
+      summary: "get upcoming sessions"
+      description: >
+        Returns up to {limit} upcoming sessions. Returns 10 by default.
+      tags:
+        - "sessions"
+      parameters:
+        - $ref: "#/components/parameters/LimitQueryParam"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaceSession"
+
+  /sessions/{id}:
+    get:
+      summary: "get session by uuid"
+      operationId: "getRaceSession"
+      tags:
+        - "sessions"
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RaceSession"
+
+  # Events
+
+  /events:
+    get:
+      summary: "get all events"
+      operationId: "getEvents"
+      tags:
+        - "events"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaceEvent"
+    post:
+      summary: "create an event"
+      tags:
+        - "events"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        201:
+          $ref: "#/components/responses/CreatedResponse"
+
+  /events/upcoming:
+    get:
+      summary: "get upcoming events"
+      description: >
+        Returns up to {limit} upcoming events. Returns 10 by default.
+      tags:
+        - "events"
+      parameters:
+        - $ref: "#/components/parameters/LimitQueryParam"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaceEvent"
+
+  /events/{id}:
+    get:
+      summary: "get event by uuid"
+      tags:
+        - "events"
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RaceEvent"
+
+  /events/{id}/sessions:
+    get:
+      summary: "get sessions for event"
+      description: >
+        Returns all sessions for an event (matching the optional type parameter).
+      tags:
+        - "events"
+        - "sessions"
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+        - name: "type"
+          in: "query"
+          required: false
+          schema:
+            type: string
+            enum: [ "Practice", "Qualifying", "Sprint", "Race" ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/RaceSession"
+    post:
+      summary: "create a session for this event"
+      tags:
+        - "events"
+        - "sessions"
+      parameters:
+        - $ref: "#/components/parameters/IdPathParam"
+          description: "uuid of the event for which the session will be created"
+      requestBody:
+        $ref: "#/components/requestBodies/RaceSession"
+      responses:
+        201:
+          $ref: "#/components/responses/CreatedResponse"
+
+components:
+  parameters:
+    IdPathParam:
+      name: "id"
+      in: "path"
+      required: true
+      schema:
+        type: string
+        format: "uuid"
+
+    LimitQueryParam:
+      name: "limit"
+      in: "query"
+      required: false
+      schema:
+          type: integer
+
+  requestBodies:
+    RaceSession:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              sessionType:
+                type: string
+                enum: [ "Practice", "Qualifying", "Sprint", "Race" ]
+              startTime:
+                type: string
+                format: "date-time"
+
+  responses:
+    CreatedResponse:
+      description: "created"
+
+  schemas:
+    RaceEvent:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: "uuid"
+        name:
+          type: string
+        sessions:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["Practice", "Qualifying", "Sprint", "Race"]
+              uuid:
+                type: string
+                format: "uuid"
+
+    RaceSession:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: "uuid"
+        eventId:
+          type: string
+          format: "uuid"
+        sessionType:
+          type: string
+        startTime:
+          type: string
+          format: "date-time"
